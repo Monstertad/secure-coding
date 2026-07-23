@@ -1,1 +1,12 @@
 <%# 관리자 대시보드 페이지 %>
+<%- include('../partials/header') %>
+<section class="products-page">
+  <h1>관리자 대시보드</h1>
+
+  <ul class="dashboard-stats">
+    <li><a href="/admin/reports">대기 중인 신고 <strong><%= pendingReportCount %></strong>건</a></li>
+    <li><a href="/admin/users">전체 회원 <strong><%= totalUsers %></strong>명</a></li>
+    <li><a href="/admin/products">전체 상품 <strong><%= totalProducts %></strong>개</a></li>
+  </ul>
+</section>
+<%- include('../partials/footer') %>

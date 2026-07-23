@@ -1,1 +1,34 @@
 <%# 상품 수정 페이지 %>
+<%- include('../partials/header') %>
+<section class="auth-form">
+  <h1>상품 수정</h1>
+
+  <% if (errors && errors.length) { %>
+    <ul class="error-list">
+      <% errors.forEach(function(msg) { %><li><%= msg %></li><% }); %>
+    </ul>
+  <% } %>
+
+  <form action="/products/<%= product.id %>/edit" method="POST" enctype="multipart/form-data" novalidate>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <label for="title">제목</label>
+    <input type="text" id="title" name="title" value="<%= values.title %>" maxlength="200" required>
+
+    <label for="description">설명</label>
+    <textarea id="description" name="description" maxlength="2000" rows="6"><%= values.description %></textarea>
+
+    <label for="price">가격 (원)</label>
+    <input type="number" id="price" name="price" value="<%= values.price %>" min="0" max="100000000" step="1" required>
+
+    <% if (product.image) { %>
+      <p>현재 이미지</p>
+      <img src="/uploads/products/<%= product.image %>" alt="현재 이미지" class="current-image">
+    <% } %>
+    <label for="image">새 이미지로 교체 (선택 - 비워두면 기존 이미지 유지)</label>
+    <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/webp,image/gif">
+
+    <button type="submit">수정하기</button>
+  </form>
+</section>
+<%- include('../partials/footer') %>

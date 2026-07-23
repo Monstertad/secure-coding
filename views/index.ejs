@@ -1,1 +1,17 @@
 <%# 메인 페이지 (상품 리스트 진입, 검색, 채팅 입장 등) %>
+<%- include('partials/header') %>
+<section class="hero">
+  <h1>중고거래 플랫폼</h1>
+  <% if (locals.currentUser) { %>
+    <p><%= currentUser.username %>님, 환영합니다.</p>
+    <% if (balance !== null) { %>
+      <p>보유 잔액: <strong><%= Number(balance).toLocaleString('ko-KR') %>원</strong></p>
+    <% } %>
+  <% } else { %>
+    <p>로그인 후 이용하실 수 있습니다.</p>
+    <a class="button" href="/login">로그인</a>
+    <a class="button button-secondary" href="/register">회원가입</a>
+  <% } %>
+  <a class="button" href="/products">상품 둘러보기</a>
+</section>
+<%- include('partials/footer') %>

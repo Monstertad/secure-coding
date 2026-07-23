@@ -1,1 +1,33 @@
 <%# 공통 헤더 partial - 네비게이션, 로그인 상태 표시 %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiny Secondhand Platform</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/">Tiny Secondhand</a>
+    <nav>
+      <% if (locals.currentUser) { %>
+        <a href="/products">상품</a>
+        <a href="/chat">채팅</a>
+        <a href="/transfer/history">송금</a>
+        <a href="/reports/my">내 신고내역</a>
+        <% if (currentUser.role === 'ADMIN') { %>
+          <a href="/admin">관리자</a>
+        <% } %>
+        <span class="nav-user"><%= currentUser.username %>님</span>
+        <form action="/logout" method="POST" class="inline-form">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit" class="link-button">로그아웃</button>
+        </form>
+      <% } else { %>
+        <a href="/login">로그인</a>
+        <a href="/register">회원가입</a>
+      <% } %>
+    </nav>
+  </header>
+  <main class="site-main">

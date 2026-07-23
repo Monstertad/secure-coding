@@ -1,1 +1,48 @@
 <%# 관리자 - 회원 관리 페이지 %>
+<%- include('../partials/header') %>
+<section class="products-page">
+  <h1>회원 관리</h1>
+
+  <table class="report-table">
+    <thead>
+      <tr><th>ID</th><th>아이디</th><th>이메일</th><th>권한</th><th>상태</th><th>잔액</th><th>가입일</th><th>조치</th></tr>
+    </thead>
+    <tbody>
+      <% users.forEach(function(u) { %>
+        <tr>
+          <td>#<%= u.id %></td>
+          <td><%= u.username %></td>
+          <td><%= u.email %></td>
+          <td><%= u.role %></td>
+          <td><%= u.status %></td>
+          <td><%= Number(u.balance).toLocaleString('ko-KR') %>원</td>
+          <td><%= new Date(u.created_at).toLocaleDateString('ko-KR') %></td>
+          <td class="report-actions">
+            <% if (locals.currentUser && u.id !== currentUser.id) { %>
+              <% ['ACTIVE', 'SUSPENDED', 'DORMANT'].forEach(function(s) { %>
+                <% if (s !== u.status) { %>
+                  <form action="/admin/users/<%= u.id %>/status" method="POST" class="inline-form">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="status" value="<%= s %>">
+                    <button type="submit" class="button button-secondary">
+                      <%= s === 'ACTIVE' ? '활성화' : (s === 'SUSPENDED' ? '정지' : '휴면') %>
+                    </button>
+                  </form>
+                <% } %>
+              <% }); %>
+            <% } else { %>
+              -
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <nav class="pagination">
+    <% if (page > 1) { %><a href="/admin/users?page=<%= page - 1 %>">이전</a><% } %>
+    <span><%= page %> / <%= totalPages %></span>
+    <% if (page < totalPages) { %><a href="/admin/users?page=<%= page + 1 %>">다음</a><% } %>
+  </nav>
+</section>
+<%- include('../partials/footer') %>

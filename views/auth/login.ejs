@@ -1,1 +1,36 @@
 <%# 로그인 페이지 %>
+<%- include('../partials/header') %>
+<section class="auth-form">
+  <h1>로그인</h1>
+
+  <% if (registered) { %>
+    <p class="success-message">회원가입이 완료되었습니다. 로그인해주세요.</p>
+  <% } %>
+
+  <% if (errors && errors.length) { %>
+    <ul class="error-list">
+      <% errors.forEach(function(msg) { %><li><%= msg %></li><% }); %>
+    </ul>
+  <% } %>
+
+  <form action="/login" method="POST" novalidate>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <label for="email">이메일</label>
+    <input type="email" id="email" name="email" value="<%= values.email %>"
+           maxlength="255" required autocomplete="email">
+
+    <label for="password">비밀번호</label>
+    <input type="password" id="password" name="password" required autocomplete="current-password">
+
+    <label class="checkbox-label">
+      <input type="checkbox" name="rememberMe" value="1">
+      로그인 상태 유지
+    </label>
+
+    <button type="submit">로그인</button>
+  </form>
+
+  <p>계정이 없으신가요? <a href="/register">회원가입</a></p>
+</section>
+<%- include('../partials/footer') %>

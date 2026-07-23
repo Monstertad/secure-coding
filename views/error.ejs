@@ -1,0 +1,14 @@
+<%- include('partials/header') %>
+<section class="error-page">
+  <h1><%= status %></h1>
+  <p><%= message %></p>
+  <% if (errors && errors.length) { %>
+    <ul class="error-list">
+      <% errors.forEach(function(msg) { %>
+        <li><%= msg %></li>
+      <% }); %>
+    </ul>
+  <% } %>
+  <a href="/">홈으로</a>
+</section>
+<%- include('partials/footer') %>

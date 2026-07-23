@@ -1,1 +1,41 @@
 <%# 관리자 - 상품 관리 페이지 %>
+<%- include('../partials/header') %>
+<section class="products-page">
+  <h1>상품 관리</h1>
+
+  <table class="report-table">
+    <thead>
+      <tr><th>ID</th><th>제목</th><th>판매자</th><th>가격</th><th>상태</th><th>등록일</th><th>조치</th></tr>
+    </thead>
+    <tbody>
+      <% products.forEach(function(p) { %>
+        <tr>
+          <td>#<%= p.id %></td>
+          <td><a href="/products/<%= p.id %>"><%= p.title %></a></td>
+          <td><%= p.seller_username %></td>
+          <td><%= Number(p.price).toLocaleString('ko-KR') %>원</td>
+          <td><%= p.status %></td>
+          <td><%= new Date(p.created_at).toLocaleDateString('ko-KR') %></td>
+          <td>
+            <% if (p.status !== 'DELETED') { %>
+              <form action="/admin/products/<%= p.id %>/delete" method="POST" class="inline-form"
+                    onsubmit="return confirm('이 상품을 삭제하시겠습니까?');">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="button button-danger">삭제</button>
+              </form>
+            <% } else { %>
+              -
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <nav class="pagination">
+    <% if (page > 1) { %><a href="/admin/products?page=<%= page - 1 %>">이전</a><% } %>
+    <span><%= page %> / <%= totalPages %></span>
+    <% if (page < totalPages) { %><a href="/admin/products?page=<%= page + 1 %>">다음</a><% } %>
+  </nav>
+</section>
+<%- include('../partials/footer') %>

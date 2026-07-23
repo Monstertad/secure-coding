@@ -1,1 +1,48 @@
 <%# 상품 목록/검색 페이지 %>
+<%- include('../partials/header') %>
+<section class="products-page">
+  <h1>상품 목록</h1>
+
+  <form action="/products" method="GET" class="search-form">
+    <input type="text" name="q" placeholder="검색어 (제목/설명)" value="<%= keyword %>" maxlength="100">
+    <input type="number" name="minPrice" placeholder="최소 가격" min="0" value="<%= minPrice != null ? minPrice : '' %>">
+    <input type="number" name="maxPrice" placeholder="최대 가격" min="0" value="<%= maxPrice != null ? maxPrice : '' %>">
+    <button type="submit">검색</button>
+  </form>
+
+  <% if (locals.currentUser) { %>
+    <a class="button" href="/products/new">상품 등록</a>
+  <% } %>
+
+  <% if (items.length === 0) { %>
+    <p>조건에 맞는 상품이 없습니다.</p>
+  <% } else { %>
+    <ul class="product-grid">
+      <% items.forEach(function(item) { %>
+        <li class="product-card">
+          <a href="/products/<%= item.id %>">
+            <% if (item.image) { %>
+              <img src="/uploads/products/<%= item.image %>" alt="<%= item.title %>">
+            <% } else { %>
+              <div class="no-image">이미지 없음</div>
+            <% } %>
+            <h2><%= item.title %></h2>
+            <p class="price"><%= Number(item.price).toLocaleString('ko-KR') %>원</p>
+            <p class="status-badge"><%= item.status === 'SALE' ? '판매중' : '판매완료' %></p>
+          </a>
+        </li>
+      <% }); %>
+    </ul>
+
+    <nav class="pagination">
+      <% if (page > 1) { %>
+        <a href="/products?q=<%= encodeURIComponent(keyword) %>&page=<%= page - 1 %>">이전</a>
+      <% } %>
+      <span><%= page %> / <%= totalPages %></span>
+      <% if (page < totalPages) { %>
+        <a href="/products?q=<%= encodeURIComponent(keyword) %>&page=<%= page + 1 %>">다음</a>
+      <% } %>
+    </nav>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>

@@ -1,1 +1,19 @@
 <%# 전체 채팅방 페이지 %>
+<%- include('../partials/header') %>
+<section class="chat-page">
+  <h1>전체 채팅</h1>
+  <div id="chat-messages" class="chat-messages" aria-live="polite"></div>
+  <form id="chat-form" class="chat-form">
+    <input type="text" id="chat-input" maxlength="2000" placeholder="메시지를 입력하세요" autocomplete="off" required>
+    <button type="submit">전송</button>
+  </form>
+</section>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  window.__CHAT_CONFIG__ = {
+    mode: 'global',
+    currentUserId: <%= currentUser.id %>
+  };
+</script>
+<script src="/js/chat.js"></script>
+<%- include('../partials/footer') %>

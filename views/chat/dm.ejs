@@ -1,1 +1,24 @@
 <%# 1:1 DM 채팅 페이지 %>
+<%- include('../partials/header') %>
+<section class="chat-page">
+  <h1><%= targetUser.username %>님과의 대화</h1>
+  <p class="chat-subaction">
+    <a href="/transfer/send?receiverId=<%= targetUser.id %>">이 사용자에게 송금하기</a> ·
+    <a href="/reports/new?targetType=USER&targetId=<%= targetUser.id %>">이 사용자 신고하기</a>
+  </p>
+  <div id="chat-messages" class="chat-messages" aria-live="polite"></div>
+  <form id="chat-form" class="chat-form">
+    <input type="text" id="chat-input" maxlength="2000" placeholder="메시지를 입력하세요" autocomplete="off" required>
+    <button type="submit">전송</button>
+  </form>
+</section>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  window.__CHAT_CONFIG__ = {
+    mode: 'dm',
+    currentUserId: <%= currentUser.id %>,
+    targetUserId: <%= targetUser.id %>
+  };
+</script>
+<script src="/js/chat.js"></script>
+<%- include('../partials/footer') %>

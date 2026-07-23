@@ -1,1 +1,39 @@
 <%# 관리자 - 신고 관리 페이지 %>
+<%- include('../partials/header') %>
+<section class="products-page">
+  <h1>신고 관리</h1>
+
+  <% if (reports.length === 0) { %>
+    <p>대기 중인 신고가 없습니다.</p>
+  <% } else { %>
+    <table class="report-table">
+      <thead>
+        <tr><th>대상</th><th>신고자</th><th>사유</th><th>접수일</th><th>조치</th></tr>
+      </thead>
+      <tbody>
+        <% reports.forEach(function(r) { %>
+          <tr>
+            <td><%= r.target_type %> #<%= r.target_id %></td>
+            <td><%= r.reporter_username %></td>
+            <td><%= r.reason %></td>
+            <td><%= new Date(r.created_at).toLocaleDateString('ko-KR') %></td>
+            <td class="report-actions">
+              <form action="/admin/reports/<%= r.id %>/resolve" method="POST" class="inline-form"
+                    onsubmit="return confirm('<%= r.target_type === 'PRODUCT' ? '상품을 삭제' : (r.target_type === 'USER' ? '사용자를 휴면 처리' : '신고를 승인') %>하시겠습니까?');">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="action" value="approve">
+                <button type="submit" class="button button-danger">승인(조치)</button>
+              </form>
+              <form action="/admin/reports/<%= r.id %>/resolve" method="POST" class="inline-form">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="action" value="reject">
+                <button type="submit" class="button button-secondary">반려</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>
