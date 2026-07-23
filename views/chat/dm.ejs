@@ -1,6 +1,6 @@
 <%# 1:1 DM 채팅 페이지 %>
 <%- include('../partials/header') %>
-<section class="chat-page">
+<section class="chat-page" data-mode="dm" data-current-user-id="<%= currentUser.id %>" data-target-user-id="<%= targetUser.id %>">
   <h1><%= targetUser.username %>님과의 대화</h1>
   <p class="chat-subaction">
     <a href="/transfer/send?receiverId=<%= targetUser.id %>">이 사용자에게 송금하기</a> ·
@@ -13,12 +13,5 @@
   </form>
 </section>
 <script src="/socket.io/socket.io.js"></script>
-<script>
-  window.__CHAT_CONFIG__ = {
-    mode: 'dm',
-    currentUserId: <%= currentUser.id %>,
-    targetUserId: <%= targetUser.id %>
-  };
-</script>
 <script src="/js/chat.js"></script>
 <%- include('../partials/footer') %>

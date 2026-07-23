@@ -1,1 +1,44 @@
 <%# 회원 목록 조회 페이지 %>
+<%- include('../partials/header') %>
+<section class="products-page">
+  <h1>회원 조회</h1>
+
+  <form action="/users" method="GET" class="search-form">
+    <input type="text" name="q" placeholder="아이디로 검색" value="<%= keyword %>" maxlength="50">
+    <button type="submit">검색</button>
+  </form>
+
+  <% if (items.length === 0) { %>
+    <p>조건에 맞는 회원이 없습니다.</p>
+  <% } else { %>
+    <table class="report-table">
+      <thead>
+        <tr><th>아이디</th><th>소개</th><th>가입일</th><th>조치</th></tr>
+      </thead>
+      <tbody>
+        <% items.forEach(function(u) { %>
+          <tr>
+            <td><%= u.username %></td>
+            <td><%= u.bio || '-' %></td>
+            <td><%= new Date(u.created_at).toLocaleDateString('ko-KR') %></td>
+            <td class="report-actions">
+              <% if (locals.currentUser && u.id !== currentUser.id) { %>
+                <a class="button" href="/chat/dm/<%= u.id %>">채팅하기</a>
+                <a class="button" href="/transfer/send?receiverId=<%= u.id %>">송금하기</a>
+              <% } else { %>
+                -
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <nav class="pagination">
+      <% if (page > 1) { %><a href="/users?q=<%= encodeURIComponent(keyword) %>&page=<%= page - 1 %>">이전</a><% } %>
+      <span><%= page %> / <%= totalPages %></span>
+      <% if (page < totalPages) { %><a href="/users?q=<%= encodeURIComponent(keyword) %>&page=<%= page + 1 %>">다음</a><% } %>
+    </nav>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>

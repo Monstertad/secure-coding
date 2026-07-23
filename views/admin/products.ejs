@@ -19,7 +19,7 @@
           <td>
             <% if (p.status !== 'DELETED') { %>
               <form action="/admin/products/<%= p.id %>/delete" method="POST" class="inline-form"
-                    onsubmit="return confirm('이 상품을 삭제하시겠습니까?');">
+                    data-confirm="이 상품을 삭제하시겠습니까?">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <button type="submit" class="button button-danger">삭제</button>
               </form>
@@ -38,4 +38,5 @@
     <% if (page < totalPages) { %><a href="/admin/products?page=<%= page + 1 %>">다음</a><% } %>
   </nav>
 </section>
+<script src="/js/confirm-forms.js"></script>
 <%- include('../partials/footer') %>

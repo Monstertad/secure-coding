@@ -9,6 +9,7 @@
 
   <p class="price"><%= Number(product.price).toLocaleString('ko-KR') %>원</p>
   <p class="status-badge"><%= product.status === 'SALE' ? '판매중' : '판매완료' %></p>
+  <p class="seller">판매자: <%= product.seller_username %></p>
   <p class="description"><%= product.description || '등록된 설명이 없습니다.' %></p>
 
   <% if (typeof purchased !== 'undefined' && purchased) { %>
@@ -19,7 +20,7 @@
     <div class="owner-actions">
       <a class="button" href="/products/<%= product.id %>/edit">수정</a>
       <form action="/products/<%= product.id %>/delete" method="POST" class="inline-form"
-            onsubmit="return confirm('정말 삭제하시겠습니까?');">
+            data-confirm="정말 삭제하시겠습니까?">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <button type="submit" class="button button-danger">삭제</button>
       </form>
@@ -28,15 +29,17 @@
     <div class="owner-actions">
       <% if (product.status === 'SALE') { %>
         <form action="/transfer/products/<%= product.id %>/purchase" method="POST" class="inline-form"
-              onsubmit="return confirm('<%= Number(product.price).toLocaleString('ko-KR') %>원에 구매하시겠습니까?');">
+              data-confirm="<%= Number(product.price).toLocaleString('ko-KR') %>원에 구매하시겠습니까?">
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <button type="submit" class="button">구매하기</button>
         </form>
       <% } %>
+      <a class="button" href="/chat/dm/<%= product.seller_id %>">판매자에게 채팅하기</a>
     </div>
     <p class="chat-subaction"><a href="/reports/new?targetType=PRODUCT&targetId=<%= product.id %>">이 상품 신고하기</a></p>
   <% } %>
 
   <a href="/products">목록으로</a>
 </section>
+<script src="/js/confirm-forms.js"></script>
 <%- include('../partials/footer') %>

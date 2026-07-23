@@ -19,7 +19,7 @@
             <td><%= new Date(r.created_at).toLocaleDateString('ko-KR') %></td>
             <td class="report-actions">
               <form action="/admin/reports/<%= r.id %>/resolve" method="POST" class="inline-form"
-                    onsubmit="return confirm('<%= r.target_type === 'PRODUCT' ? '상품을 삭제' : (r.target_type === 'USER' ? '사용자를 휴면 처리' : '신고를 승인') %>하시겠습니까?');">
+                    data-confirm="<%= r.target_type === 'PRODUCT' ? '상품을 삭제' : (r.target_type === 'USER' ? '사용자를 휴면 처리' : '신고를 승인') %>하시겠습니까?">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" name="action" value="approve">
                 <button type="submit" class="button button-danger">승인(조치)</button>
@@ -36,4 +36,5 @@
     </table>
   <% } %>
 </section>
+<script src="/js/confirm-forms.js"></script>
 <%- include('../partials/footer') %>

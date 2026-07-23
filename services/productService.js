@@ -66,8 +66,8 @@ function assertValidProductInput({ title, description, price }) {
   }
 
   const numericPrice = Number(price);
-  if (!Number.isFinite(numericPrice) || numericPrice < 0 || numericPrice > PRICE_MAX) {
-    throw new ProductError('가격은 0 이상의 숫자로 입력해주세요.');
+  if (!Number.isFinite(numericPrice) || numericPrice <= 0 || numericPrice > PRICE_MAX) {
+    throw new ProductError('가격은 1원 이상이어야 합니다.');
   }
 }
 

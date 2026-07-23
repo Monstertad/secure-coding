@@ -4,7 +4,8 @@
 const pool = require('../config/db');
 
 const LIST_COLUMNS = 'id, title, price, image, seller_id, status, created_at';
-const DETAIL_COLUMNS = 'id, title, description, price, image, seller_id, status, created_at, updated_at';
+const DETAIL_COLUMNS =
+  'p.id, p.title, p.description, p.price, p.image, p.seller_id, p.status, p.created_at, p.updated_at, u.username AS seller_username';
 
 async function insertProduct({ title, description, price, sellerId, image }) {
   const [result] = await pool.execute(
@@ -16,7 +17,7 @@ async function insertProduct({ title, description, price, sellerId, image }) {
 
 async function findById(id) {
   const [rows] = await pool.execute(
-    `SELECT ${DETAIL_COLUMNS} FROM products WHERE id = ? LIMIT 1`,
+    `SELECT ${DETAIL_COLUMNS} FROM products p JOIN users u ON u.id = p.seller_id WHERE p.id = ? LIMIT 1`,
     [id]
   );
   return rows[0] || null;

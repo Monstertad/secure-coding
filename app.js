@@ -20,6 +20,7 @@ const chatRoutes = require('./routes/chat');
 const reportRoutes = require('./routes/reports');
 const adminRoutes = require('./routes/admin');
 const transferRoutes = require('./routes/transfer');
+const userRoutes = require('./routes/users');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -68,8 +69,7 @@ app.use('/chat', chatRoutes);
 app.use('/reports', reportRoutes);
 app.use('/admin', adminRoutes);
 app.use('/transfer', transferRoutes);
-
-// TODO: users 라우터는 해당 컨트롤러·서비스 구현이 완료되는 대로 여기에 연결한다.
+app.use('/users', userRoutes);
 
 app.use((req, res) => {
   res.status(404).render('error', { status: 404, message: '페이지를 찾을 수 없습니다.', errors: [] });

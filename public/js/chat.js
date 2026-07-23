@@ -1,6 +1,14 @@
 (function () {
-  var config = window.__CHAT_CONFIG__;
-  if (!config) return;
+  // 페이지 진입 정보는 인라인 <script>가 아니라 .chat-page 요소의 data-* 속성으로 전달된다.
+  // (Helmet CSP의 script-src 'self'가 인라인 스크립트를 차단하기 때문)
+  var pageEl = document.querySelector('.chat-page');
+  if (!pageEl) return;
+
+  var config = {
+    mode: pageEl.dataset.mode,
+    currentUserId: Number(pageEl.dataset.currentUserId),
+    targetUserId: pageEl.dataset.targetUserId ? Number(pageEl.dataset.targetUserId) : null,
+  };
 
   var socket = io();
   var messagesEl = document.getElementById('chat-messages');

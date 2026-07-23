@@ -53,6 +53,15 @@ async function createReport({ reporterId, targetType, targetId, reason }) {
 
   await assertTargetExists(targetType, targetId);
 
+  // 동일 대상(target_type + target_id)을 같은 사용자가 이미 신고했다면 중복 신고를 막는다.
+  const existingReports = await reportModel.findByReporter(reporterId);
+  const alreadyReported = existingReports.some(
+    (r) => r.target_type === targetType && r.target_id === targetId
+  );
+  if (alreadyReported) {
+    throw new ReportError('이미 신고한 대상입니다.', 409);
+  }
+
   const reportId = await reportModel.insertReport({
     reporterId,
     targetType,
